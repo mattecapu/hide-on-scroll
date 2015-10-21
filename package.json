@@ -1,0 +1,33 @@
+{
+  "name": "hide-on-scroll",
+  "version": "0.0.1",
+  "description": "hide navigation bar on scroll down, reveal on scroll up",
+  "main": "navbar.es5.js",
+  "scripts": {
+    "build": "babel navbar.js > navbar.es5.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/mattecapu/hide-on-scroll.git"
+  },
+  "keywords": [
+    "hide",
+    "show",
+    "navbar",
+    "navigation",
+    "reveal",
+    "scroll"
+  ],
+  "author": "Matteo Capucci <mattecapu@live.it>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mattecapu/hide-on-scroll/issues"
+  },
+  "homepage": "https://github.com/mattecapu/hide-on-scroll#readme",
+  "dependencies": {
+    "jquery": "^2.1.4"
+  },
+  "devDependencies": {
+    "babel": "^5.8.23"
+  }
+}
