@@ -8,58 +8,60 @@ const cssPrefix = ($el, rule, value, prValue) => {
 	});
 }
 
-export default function navbar({navbarSelector, hidingClass, pollInterval = 200}) {
-	$(() => {
-		const delta = 5;
-		const $navbar = $(navbarSelector);
+export function hideOnScroll({navbarSelector, hidingClass, pollInterval = 200}) {
+	const delta = 5;
+	const $navbar = $(navbarSelector);
 
-		let didScroll;
-		let lastScrollTop = 0;
+	let didScroll;
+	let lastScrollTop = 0;
 
-		let navbarHeight = $navbar.outerHeight();
+	let navbarHeight = $navbar.outerHeight();
 
-		if (!hidingClass) {
-			cssPrefix($navbar, 'transition-property', 'transform', true);
+	if (!hidingClass) {
+		cssPrefix($navbar, 'transition-property', 'transform', true);
+	}
+
+	$(window).scroll(() => didScroll = true);
+
+	function hasScrolled() {
+		const st = $(window).scrollTop();
+
+		// Make sure they scroll more than delta
+		if (Math.abs(lastScrollTop - st) <= delta) {
+			return;
 		}
 
-		$(window).scroll(() => didScroll = true);
-
-		function hasScrolled() {
-			const st = $(window).scrollTop();
-
-			// Make sure they scroll more than delta
-			if (Math.abs(lastScrollTop - st) <= delta) {
-				return;
-			}
-
-			// If they scrolled down and are past the navbar, add class .nav-up.
-			// This is necessary so you never see what is "behind" the navbar.
-			if (st > lastScrollTop && st > navbarHeight){
-				// Scroll Down
-				if (hidingClass) {
-					$navbar.addClass(hidingClass);
-				} else {
-					cssPrefix($navbar, 'transform', 'translateY(-100%)');
-				}
+		// If they scrolled down and are past the navbar, hide it
+		// This is necessary so you never see what is "behind" the navbar.
+		if (st > lastScrollTop && st > navbarHeight){
+			// Scroll Down
+			if (hidingClass) {
+				$navbar.addClass(hidingClass);
 			} else {
-				// Scroll Up
-				if (st + $(window).height() < $(document).height()) {
-					if (hidingClass) {
-						$navbar.removeClass(hidingClass);
-					} else {
-						cssPrefix($navbar, 'transform', 'translateY(0)');
-					}
+				cssPrefix($navbar, 'transform', 'translateY(-100%)');
+			}
+		} else {
+			// Scroll Up
+			if (st + $(window).height() < $(document).height()) {
+				if (hidingClass) {
+					$navbar.removeClass(hidingClass);
+				} else {
+					cssPrefix($navbar, 'transform', 'translateY(0)');
 				}
 			}
-
-			lastScrollTop = st;
 		}
+		lastScrollTop = st;
+	}
 
-		setInterval(() => {
-			if (didScroll) {
-				hasScrolled();
-				didScroll = false;
-			}
-		}, pollInterval);
-	});
+	setInterval(() => {
+		if (didScroll) {
+			hasScrolled();
+			didScroll = false;
+		}
+	}, pollInterval);
+}
+
+/*! call hideOnScroll on document.ready */
+export default function onReady_hideOnScroll(...args) {
+	$(() => hideOnScroll.call(null, args));
 }
