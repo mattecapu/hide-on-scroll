@@ -1,6 +1,6 @@
 {
   "name": "hide-on-scroll",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "hide navigation bar on scroll down, reveal on scroll up",
   "main": "navbar.es5.js",
   "scripts": {
